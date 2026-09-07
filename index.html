@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Зе Рыба — кейс монтажа ресторанного рилса</title>
+<meta name="description" content="Кейс: монтаж вертикального рилса из отснятого в ресторане материала — идея, задача, этапы, технологии, результат.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐟</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #fbf7f1;
+    --bg-alt: #f3ece1;
+    --ink: #201a14;
+    --ink-soft: #5c5348;
+    --line: rgba(32,26,20,0.12);
+    --accent: #c1531f;
+    --accent-2: #7a8f5c;
+    --card: #ffffff;
+    --shadow: 0 20px 50px -25px rgba(32,26,20,0.35);
+    --radius: 20px;
+    --mono: 'Inter', system-ui, sans-serif;
+    --serif: 'Fraunces', Georgia, serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg: #14110d;
+      --bg-alt: #1c1712;
+      --ink: #f4ede2;
+      --ink-soft: #b8ab98;
+      --line: rgba(244,237,226,0.14);
+      --accent: #e8834a;
+      --accent-2: #9db47a;
+      --card: #1f1a14;
+      --shadow: 0 20px 60px -25px rgba(0,0,0,0.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg: #14110d;
+    --bg-alt: #1c1712;
+    --ink: #f4ede2;
+    --ink-soft: #b8ab98;
+    --line: rgba(244,237,226,0.14);
+    --accent: #e8834a;
+    --accent-2: #9db47a;
+    --card: #1f1a14;
+    --shadow: 0 20px 60px -25px rgba(0,0,0,0.6);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--mono);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+  a{color:inherit;}
+
+  /* NAV */
+  header.nav{
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(14px);
+    background:color-mix(in srgb, var(--bg) 78%, transparent);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{max-width:1080px;margin:0 auto;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;}
+  .brand{font-family:var(--serif);font-weight:600;font-size:1.15rem;letter-spacing:0.02em;display:flex;align-items:center;gap:8px;}
+  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block;}
+  .nav-links{display:flex;gap:26px;font-size:0.88rem;color:var(--ink-soft);}
+  .nav-links a{text-decoration:none;transition:color .2s;}
+  .nav-links a:hover{color:var(--accent);}
+
+  /* HERO */
+  .hero{
+    padding:88px 0 64px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";position:absolute;inset:-20% -10% auto -10%;height:420px;
+    background:radial-gradient(60% 60% at 30% 20%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 70%),
+               radial-gradient(50% 50% at 80% 10%, color-mix(in srgb, var(--accent-2) 22%, transparent), transparent 70%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;
+    color:var(--accent);font-weight:700;
+    padding:6px 14px;border:1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+    border-radius:999px;margin-bottom:24px;background:color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+  h1.title{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:clamp(2.4rem, 5.6vw, 4.4rem);
+    line-height:1.04;
+    margin:0 0 22px;
+    letter-spacing:-0.01em;
+  }
+  h1.title em{font-style:italic;color:var(--accent);}
+  .lede{font-size:clamp(1.05rem,1.6vw,1.25rem);color:var(--ink-soft);max-width:640px;margin:0 0 36px;}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:34px;padding-top:28px;border-top:1px solid var(--line);}
+  .hero-meta div{display:flex;flex-direction:column;gap:4px;}
+  .hero-meta .k{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-soft);}
+  .hero-meta .v{font-weight:700;font-size:1rem;}
+
+  /* VIDEO SHOWCASE */
+  .showcase{padding:20px 0 80px;display:flex;justify-content:center;}
+  .phone{
+    width:min(320px, 78vw);
+    border-radius:38px;
+    padding:12px;
+    background:linear-gradient(160deg, #2a241c, #0d0b08);
+    box-shadow:var(--shadow);
+    position:relative;
+  }
+  .phone video{width:100%;display:block;border-radius:28px;background:#000;aspect-ratio:9/16;object-fit:cover;}
+  .phone::after{
+    content:"";position:absolute;top:26px;left:50%;transform:translateX(-50%);
+    width:70px;height:6px;border-radius:4px;background:rgba(255,255,255,0.15);
+  }
+
+  section{padding:70px 0;border-top:1px solid var(--line);}
+  .section-head{max-width:600px;margin-bottom:44px;}
+  .section-tag{font-size:0.78rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);font-weight:700;margin-bottom:12px;}
+  h2{font-family:var(--serif);font-weight:600;font-size:clamp(1.7rem,3vw,2.4rem);margin:0 0 14px;letter-spacing:-0.01em;}
+  .section-head p{color:var(--ink-soft);margin:0;font-size:1.02rem;}
+
+  /* IDEA / TASK cards */
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:30px;box-shadow:var(--shadow);
+  }
+  .card h3{margin:0 0 12px;font-size:1.15rem;font-family:var(--serif);font-weight:600;}
+  .card p{color:var(--ink-soft);margin:0;font-size:0.98rem;}
+  .card .num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:38px;height:38px;border-radius:11px;margin-bottom:16px;
+    background:color-mix(in srgb, var(--accent) 14%, transparent);
+    color:var(--accent);font-weight:800;font-family:var(--serif);
+  }
+
+  /* TIMELINE */
+  .timeline{position:relative;margin-top:10px;}
+  .timeline::before{
+    content:"";position:absolute;left:23px;top:8px;bottom:8px;width:2px;
+    background:linear-gradient(var(--accent), var(--accent-2));opacity:0.35;
+  }
+  .step{position:relative;padding:0 0 40px 62px;}
+  .step:last-child{padding-bottom:0;}
+  .step .marker{
+    position:absolute;left:0;top:0;width:48px;height:48px;border-radius:50%;
+    background:var(--card);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--serif);font-weight:700;color:var(--accent);
+    box-shadow:var(--shadow);
+  }
+  .step h4{margin:2px 0 8px;font-size:1.12rem;font-family:var(--serif);font-weight:600;}
+  .step p{margin:0 0 10px;color:var(--ink-soft);}
+  .tag-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .tag{
+    font-size:0.76rem;font-weight:600;color:var(--ink-soft);
+    background:var(--bg-alt);border:1px solid var(--line);
+    padding:4px 10px;border-radius:8px;font-family:ui-monospace,'SF Mono',Menlo,monospace;
+  }
+
+  /* GALLERY */
+  .gallery{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;}
+  .gallery figure{margin:0;border-radius:14px;overflow:hidden;position:relative;aspect-ratio:9/13;box-shadow:var(--shadow);}
+  .gallery img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease;}
+  .gallery figure:hover img{transform:scale(1.06);}
+  .gallery figcaption{
+    position:absolute;left:0;right:0;bottom:0;padding:10px 12px;
+    font-size:0.72rem;color:#fff;font-weight:600;
+    background:linear-gradient(to top, rgba(0,0,0,0.65), transparent);
+  }
+
+  /* TECH */
+  .tech-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .tech-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;}
+  .tech-card .label{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);font-weight:700;margin-bottom:10px;}
+  .tech-card code{
+    display:block;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:0.82rem;
+    color:var(--ink);background:var(--bg-alt);padding:12px 14px;border-radius:10px;
+    overflow-x:auto;white-space:pre;line-height:1.55;border:1px solid var(--line);
+  }
+  .tech-card p{color:var(--ink-soft);font-size:0.9rem;margin:10px 0 0;}
+
+  /* RESULT stat strip */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;text-align:center;}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 12px;box-shadow:var(--shadow);}
+  .stat .n{font-family:var(--serif);font-size:2.1rem;font-weight:600;color:var(--accent);}
+  .stat .l{font-size:0.8rem;color:var(--ink-soft);margin-top:4px;}
+
+  footer{padding:50px 0 70px;border-top:1px solid var(--line);}
+  .footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+  .footer-inner p{color:var(--ink-soft);font-size:0.88rem;margin:0;}
+  .pill-btn{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--ink);color:var(--bg);
+    padding:11px 20px;border-radius:999px;text-decoration:none;
+    font-weight:600;font-size:0.9rem;transition:opacity .2s;
+  }
+  .pill-btn:hover{opacity:0.85;}
+
+  @media (max-width:860px){
+    .grid-2{grid-template-columns:1fr;}
+    .tech-grid{grid-template-columns:1fr;}
+    .stats{grid-template-columns:1fr 1fr;}
+    .gallery{grid-template-columns:repeat(3,1fr);}
+    .nav-links{display:none;}
+  }
+  @media (max-width:520px){
+    .gallery{grid-template-columns:repeat(2,1fr);}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand"><span class="dot"></span>Зе Рыба · кейс</div>
+    <nav class="nav-links">
+      <a href="#idea">Идея</a>
+      <a href="#process">Процесс</a>
+      <a href="#gallery">Материал</a>
+      <a href="#tech">Технологии</a>
+      <a href="#result">Результат</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow">🎬 Кейс монтажа · food & blog content</span>
+    <h1 class="title">Из семи хаотичных<br>вертикальных клипов —<br><em>один кейс, который хочется досмотреть</em></h1>
+    <p class="lede">Разбор того, как сырой ресторанный футадж с ужина за морепродуктами превратился в 16-секундный вертикальный рилс с гармоничными переходами, цветокоррекцией и титрами — от съёмки до готового к публикации файла.</p>
+    <div class="hero-meta">
+      <div><span class="k">Формат</span><span class="v">Reels / TikTok, 9:16</span></div>
+      <div><span class="k">Исходники</span><span class="v">8 клипов iPhone, ~35 сек</span></div>
+      <div><span class="k">Результат</span><span class="v">16.4 сек, 720×1280</span></div>
+      <div><span class="k">Инструмент</span><span class="v">FFmpeg + Claude</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="showcase">
+  <div class="phone">
+    <video src="assets/reel.mp4" poster="assets/poster.jpg" controls playsinline muted loop></video>
+  </div>
+</div>
+
+<section id="idea">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Основная мысль</div>
+      <h2>Задача была не «склеить видео», а рассказать историю ужина</h2>
+      <p>Сырые клипы — это документация момента. Кейс — это решение: как из бытовой съёмки в ресторане сделать контент, который держит внимание зрителя первые полторы секунды и ведёт его по драматургии блюд.</p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="num">01</div>
+        <h3>Идея</h3>
+        <p>Показать ужин как маленькую историю: от эффектного хука с макро-планом до финального кадра с ролловыми суши — так, будто зритель сам сидит за этим столом и пробует каждое блюдо по очереди.</p>
+      </div>
+      <div class="card">
+        <div class="num">02</div>
+        <h3>Задача</h3>
+        <p>Из восьми необработанных вертикальных клипов с телефона собрать связный ролик 15–17 секунд с плавными, разнообразными переходами, тёплой цветокоррекцией «под аппетит», кириллическими титрами и чистым звуком — без внешнего софта для монтажа, только консольные инструменты.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="process">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Как это делалось</div>
+      <h2>Путь от папки с .MOV до готового рилса</h2>
+      <p>Семь этапов — от разбора материала до финального рендера с автоматической цветокоррекцией и титрами.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="step">
+        <div class="marker">1</div>
+        <h4>Разбор материала</h4>
+        <p>Через <code>mdls</code> вытащены метаданные всех восьми клипов (длительность, разрешение, кодек) без обращения к внешним конвертерам — только штатные средства macOS.</p>
+        <div class="tag-row"><span class="tag">mdls</span><span class="tag">H.264 / 1280×720</span></div>
+      </div>
+      <div class="step">
+        <div class="marker">2</div>
+        <h4>Визуальная раскадровка</h4>
+        <p>Для каждого клипа собран контакт-лист из трёх кадров (начало / середина / конец), чтобы отсмотреть содержимое без запуска проигрывателя — и на его основе выбрать шесть лучших планов из восьми и выстроить их в логику подачи блюд.</p>
+        <div class="tag-row"><span class="tag">fps + tile</span><span class="tag">contact sheet</span></div>
+      </div>
+      <div class="step">
+        <div class="marker">3</div>
+        <h4>Настройка инструмента</h4>
+        <p>Системного FFmpeg на машине не было — собран рабочий бинарник через Python-пакет <code>imageio-ffmpeg</code>, включающий libx264, freetype и все нужные фильтры для монтажа без Homebrew.</p>
+        <div class="tag-row"><span class="tag">imageio-ffmpeg</span><span class="tag">ffmpeg 7.1</span></div>
+      </div>
+      <div class="step">
+        <div class="marker">4</div>
+        <h4>Монтаж и переходы</h4>
+        <p>Клипы обрезаны до сильных фрагментов, длинные панорамы ускорены в 1.25×, а между планами подобраны разные типы переходов <code>xfade</code> — zoom-in внутри одного блюда, whip-blur на смене блюда, circle-open на подаче деликатеса.</p>
+        <div class="tag-row"><span class="tag">xfade</span><span class="tag">zoomin</span><span class="tag">hblur</span><span class="tag">circleopen</span></div>
+      </div>
+      <div class="step">
+        <div class="marker">5</div>
+        <h4>Цвет, титры, звук</h4>
+        <p>Единая тёплая цветокоррекция (контраст, насыщенность, цветовой баланс в оранжевый), виньетирование и лёгкая резкость. Кириллические титры на HelveticaNeue с fade-анимацией. Звук — кроссфейды между клипами и нормализация громкости по стандарту loudnorm.</p>
+        <div class="tag-row"><span class="tag">eq / colorbalance</span><span class="tag">drawtext</span><span class="tag">loudnorm</span></div>
+      </div>
+      <div class="step">
+        <div class="marker">6</div>
+        <h4>Рендер</h4>
+        <p>Финальный экспорт в H.264 (CRF 19, profile high) с AAC-звуком 48 кГц и faststart-флагом — файл сразу готов к загрузке в Instagram/TikTok, без пережатия на стороне площадки.</p>
+        <div class="tag-row"><span class="tag">libx264 crf19</span><span class="tag">faststart</span></div>
+      </div>
+      <div class="step">
+        <div class="marker">7</div>
+        <h4>Упаковка кейса</h4>
+        <p>Процесс и результат оформлены в отдельный репозиторий-портфолио с деплоем на GitHub Pages — чтобы кейсом можно было поделиться одной ссылкой.</p>
+        <div class="tag-row"><span class="tag">GitHub Pages</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Материал</div>
+      <h2>Кадры, которые вошли в историю</h2>
+      <p>Пять сильных планов из восьми исходных — мидии, паста с креветками, устрица с морским ежом и роллы.</p>
+    </div>
+    <div class="gallery">
+      <figure><img src="assets/still-mussels.jpg" alt="Мидии крупным планом" loading="lazy"><figcaption>Мидии · хук</figcaption></figure>
+      <figure><img src="assets/still-mussels-bread.jpg" alt="Мидии с гренкой"><figcaption>Мидии + гренка</figcaption></figure>
+      <figure><img src="assets/still-pasta.jpg" alt="Паста с креветками"><figcaption>Паста с креветками</figcaption></figure>
+      <figure><img src="assets/still-oyster.jpg" alt="Устрица и морской ёж"><figcaption>Устрица · ёж</figcaption></figure>
+      <figure><img src="assets/still-rolls.jpg" alt="Запечённые роллы"><figcaption>Роллы · финал</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="tech">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Под капотом</div>
+      <h2>Технические решения</h2>
+      <p>Весь монтаж — это один filter_complex-граф FFmpeg, без монтажного софта с GUI.</p>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="label">Переходы</div>
+        <code>xfade=transition=zoomin
+xfade=transition=smoothleft
+xfade=transition=hblur
+xfade=transition=circleopen
+xfade=transition=smoothup
+xfade=transition=fadeblack</code>
+        <p>Шесть разных transition-эффектов — каждый подобран под характер соседних кадров, а не один и тот же на весь ролик.</p>
+      </div>
+      <div class="tech-card">
+        <div class="label">Цветокоррекция</div>
+        <code>eq=contrast=1.06:
+   saturation=1.16
+colorbalance=rm=.02:bm=-.02
+vignette=a=PI/6
+unsharp=5:5:0.4</code>
+        <p>Тёплый пищевой грейд: усиленная насыщенность, сдвиг баланса в оранжевый, мягкая виньетка и точечная резкость.</p>
+      </div>
+      <div class="tech-card">
+        <div class="label">Звук</div>
+        <code>acrossfade=d=0.45
+atempo=1.25
+loudnorm=I=-16:TP=-1.5
+aresample=48000</code>
+        <p>Кроссфейды между дорожками синхронны с видео-переходами, громкость выровнена по вещательному стандарту.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="result">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Результат</div>
+      <h2>Что получилось на выходе</h2>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="n">7→1</div><div class="l">клипов в один ролик</div></div>
+      <div class="stat"><div class="n">16.4с</div><div class="l">итоговая длительность</div></div>
+      <div class="stat"><div class="n">6</div><div class="l">уникальных переходов</div></div>
+      <div class="stat"><div class="n">9:16</div><div class="l">формат под Reels/TikTok</div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <p>Кейс подготовлен в связке человек + Claude · монтаж, цветокоррекция и упаковка кейса выполнены в одной сессии.</p>
+    <a class="pill-btn" href="assets/reel.mp4" download>Скачать ролик ↓</a>
+  </div>
+</footer>
+
+</body>
+</html>
